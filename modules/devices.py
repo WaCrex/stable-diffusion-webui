@@ -31,6 +31,11 @@ def get_cuda_device_string():
 
 
 def get_optimal_device_name():
+    from modules import shared
+    
+    if shared.cmd_opts.cpuonly:
+        return "cpu"
+    
     if torch.cuda.is_available():
         return get_cuda_device_string()
 
@@ -47,6 +52,11 @@ def get_optimal_device():
 def get_device_for(task):
     from modules import shared
 
+    if shared.cmd_opts.cpuonly:
+        return "cpu"
+
+    from modules import shared
+
     if task in shared.cmd_opts.use_cpu:
         return cpu
 
@@ -54,14 +64,18 @@ def get_device_for(task):
 
 
 def torch_gc():
-    if torch.cuda.is_available():
+    from modules import shared
+
+    if torch.cuda.is_available() and not shared.cmd_opts.cpuonly:
         with torch.cuda.device(get_cuda_device_string()):
             torch.cuda.empty_cache()
             torch.cuda.ipc_collect()
 
 
 def enable_tf32():
-    if torch.cuda.is_available():
+    from modules import shared
+    
+    if torch.cuda.is_available(): #and not shared.cmd_opts.cpuonly:
 
         # enabling benchmark option seems to enable a range of cards to do fp16 when they otherwise can't
         # see https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/4407

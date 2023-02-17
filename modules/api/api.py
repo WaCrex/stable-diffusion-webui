@@ -523,7 +523,7 @@ class Api:
             ram = { 'error': f'{err}' }
         try:
             import torch
-            if torch.cuda.is_available():
+            if torch.cuda.is_available() and not shared.cmd_opts.cpuonly:
                 s = torch.cuda.mem_get_info()
                 system = { 'free': s[0], 'used': s[1] - s[0], 'total': s[1] }
                 s = dict(torch.cuda.memory_stats(shared.device))

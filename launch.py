@@ -324,8 +324,6 @@ def tests(test_dir):
     if "--ckpt" not in sys.argv:
         sys.argv.append("--ckpt")
         sys.argv.append("./test/test_files/empty.pt")
-    if "--skip-torch-cuda-test" not in sys.argv:
-        sys.argv.append("--skip-torch-cuda-test")
     if "--disable-nan-check" not in sys.argv:
         sys.argv.append("--disable-nan-check")
 

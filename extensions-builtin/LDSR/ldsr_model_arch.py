@@ -113,7 +113,7 @@ class LDSR:
         down_sample_method = 'Lanczos'
 
         gc.collect()
-        if torch.cuda.is_available:
+        if torch.cuda.is_available and not shared.cmd_opts.cpuonly:
             torch.cuda.empty_cache()
 
         im_og = image
@@ -151,7 +151,7 @@ class LDSR:
 
         del model
         gc.collect()
-        if torch.cuda.is_available:
+        if torch.cuda.is_available and not shared.cmd_opts.cpuonly:
             torch.cuda.empty_cache()
 
         return a

@@ -704,7 +704,7 @@ def train_hypernetwork(id_task, hypernetwork_name, learn_rate, batch_size, gradi
                     hypernetwork.eval()
                     rng_state = torch.get_rng_state()
                     cuda_rng_state = None
-                    if torch.cuda.is_available():
+                    if torch.cuda.is_available() and not shared.cmd_opts.cpuonly:
                         cuda_rng_state = torch.cuda.get_rng_state_all()
                     shared.sd_model.cond_stage_model.to(devices.device)
                     shared.sd_model.first_stage_model.to(devices.device)
@@ -741,7 +741,7 @@ def train_hypernetwork(id_task, hypernetwork_name, learn_rate, batch_size, gradi
                         shared.sd_model.cond_stage_model.to(devices.cpu)
                         shared.sd_model.first_stage_model.to(devices.cpu)
                     torch.set_rng_state(rng_state)
-                    if torch.cuda.is_available():
+                    if torch.cuda.is_available() and not shared.cmd_opts.cpuonly:
                         torch.cuda.set_rng_state_all(cuda_rng_state)
                     hypernetwork.train()
                     if image is not None:
